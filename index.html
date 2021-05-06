@@ -5,7 +5,7 @@
         font-family: verdana;
         padding: 1rem;
       }
-      
+
       form {
         border: solid 1px dodgerBlue;
         padding: 1rem;
@@ -98,13 +98,12 @@
       const container = document.querySelector('#container');
       const counter = document.querySelector('span.counter');
       const average = document.querySelector('span.average');
-      //const inputValAll = document.querySelector('input.value');
-  
       let total = 0    
       
       container.addEventListener('click', (ev)=>{
           console.log(ev.target.tagName);
          if (ev.target.tagName === "SPAN"){
+           //removing one class and adding a class cornSilk
             ev.target.parentNode.classList.remove("blue");
             ev.target.parentNode.classList.add("cornSilk");
         }
@@ -112,14 +111,13 @@
 
       let arrAver = [];
       const generateCircle = ()=> {
-          //restricting numbers to 250 plus restricting size of the cirxle to 250
+        //restricting numbers to 250 plus restricting size of the cirxle to 250
         if(input.value > 250) {
             input.value = 250;
         }
         else {
             input.value = Math.floor(Math.random()*(250 - 25) + 25);
         }
-
         const size = `${input.value}px`;
         const circle = document.createElement('div');
         circle.style.width = size;
@@ -128,7 +126,7 @@
         const span = document.createElement('span');
         span.innerText = input.value;
         circle.appendChild(span);
-        
+  
         //Calculating the average
         //Creating an array of the input numbers
         arrAver.push(span.innerText*1);
@@ -137,6 +135,7 @@
           total += arrAver[i];
         }
         let avgNum = Math.floor(total / arrAver.length);
+        //assigning the average value to the inerHTML 
         average.innerHTML = avgNum;
         
         window.setTimeout(function(){
@@ -153,7 +152,6 @@
         else {
             input.value = Math.floor(Math.random()*(250 - 25) + 25);
         }
-
         const size = `${input.value}px`;
         const square = document.createElement('div');
         square.classList.add("square");
@@ -169,6 +167,7 @@
         }, 500);
       }
 
+      //since we start with 3 shapes, the count will sart at 3
       let count = 3; 
       form.addEventListener('submit', (ev)=> {
         ev.preventDefault();
@@ -177,7 +176,7 @@
         toggleShape();
       });
 
-
+      //funciton to toggle between square and circle 
       var toggleSquare = false;
       const toggleShape = () => {   
         // generate circle or square depending on toggleSquare   
