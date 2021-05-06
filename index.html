@@ -5,12 +5,14 @@
         font-family: verdana;
         padding: 1rem;
       }
+      
       form {
         border: solid 1px dodgerBlue;
         padding: 1rem;
         display: flex;
         justify-content: center;
       }
+
       input {
         height: 3rem;
       }
@@ -34,12 +36,27 @@
         align-items: center;
       }
 
+      #container > div.square{
+        padding: 0.5rem;
+        border-radius: 0%;
+      }
+
+      #container > div.square  > span{
+        background-color: cornSilk;
+        padding: 0.5rem;
+        border-radius: 0%;
+      }
+
       #container > div > span {
         background-color: cornSilk;
         padding: 0.5rem;
         border-radius: 50%;
       }
 
+      #container > div.cornSilk {
+        background-color: cornSilk;
+      }
+      
       #container > div.blue {
         background-color: dodgerBlue;
         transition: background-color 1s;
@@ -49,6 +66,8 @@
   </head>
   <body>
     <h1><a href='index.html'>Shape Generator</a></h1>
+    <div> Number of Circles: <span class="counter">3</span></div>
+    <div>Average: <span class="average"></span> </div>
     <h2>Todos</h2>
     <ul>
       <li>Create a repo named shape-generator and add this index.html page</li>
@@ -68,7 +87,7 @@
     </ul>
     <a href='https://github.com/FullstackAcademy/shape-generator'>Repo</a>
     <form>
-      <input name='px' value='25'/>
+      <input name='px' value='25' type="number"/>
     </form>
     <div id='container'>
     </div>
@@ -77,14 +96,30 @@
       const input = form.querySelector('input');
       const link = document.querySelector('a');
       const container = document.querySelector('#container');
-
+      const counter = document.querySelector('span.counter');
+      const average = document.querySelector('span.average');
+      //const inputValAll = document.querySelector('input.value');
+  
+      let total = 0    
+      
       container.addEventListener('click', (ev)=>{
-        if(!ev.target.id){
-          ev.target.parentNode.removeChild(ev.target);
+          console.log(ev.target.tagName);
+         if (ev.target.tagName === "SPAN"){
+            ev.target.parentNode.classList.remove("blue");
+            ev.target.parentNode.classList.add("cornSilk");
         }
       });
 
+      let arrAver = [];
       const generateCircle = ()=> {
+          //restricting numbers to 250 plus restricting size of the cirxle to 250
+        if(input.value > 250) {
+            input.value = 250;
+        }
+        else {
+            input.value = Math.floor(Math.random()*(250 - 25) + 25);
+        }
+
         const size = `${input.value}px`;
         const circle = document.createElement('div');
         circle.style.width = size;
@@ -93,21 +128,68 @@
         const span = document.createElement('span');
         span.innerText = input.value;
         circle.appendChild(span);
-        input.value = 25 + Math.floor(Math.random()*50);
+        
+        //Calculating the average
+        //Creating an array of the input numbers
+        arrAver.push(span.innerText*1);
+        let total = 0
+        for(let i = 0; i < arrAver.length; i++) {
+          total += arrAver[i];
+        }
+        let avgNum = Math.floor(total / arrAver.length);
+        average.innerHTML = avgNum;
+        
         window.setTimeout(function(){
           circle.classList.add('blue');
         }, 500);
       };
 
+      //creating a function to generate square 
+      const generateSquare = ()=> {
+        //restricting numbers to 250 plus restricting size of the cirxle to 250
+        if(input.value > 250) {
+            input.value = 250;
+        }
+        else {
+            input.value = Math.floor(Math.random()*(250 - 25) + 25);
+        }
+
+        const size = `${input.value}px`;
+        const square = document.createElement('div');
+        square.classList.add("square");
+        square.style.width = size;
+        square.style.height = size;
+        container.appendChild(square);
+        const span = document.createElement('span');
+        span.innerText = input.value;
+        square.appendChild(span);
+
+        window.setTimeout(function(){
+          square.classList.add('blue');
+        }, 500);
+      }
+
+      let count = 3; 
       form.addEventListener('submit', (ev)=> {
         ev.preventDefault();
-        generateCircle();
+        count++ 
+        counter.innerHTML = count; 
+        toggleShape();
       });
 
-      generateCircle();
-      generateCircle();
-      generateCircle();
 
+      var toggleSquare = false;
+      const toggleShape = () => {   
+        // generate circle or square depending on toggleSquare   
+        !toggleSquare ? generateCircle() : generateSquare();
+        // switch toggleSquare
+        toggleSquare = !toggleSquare;
+      }
+
+      toggleShape();
+      toggleShape();
+      toggleShape();
+  
     </script>
   </body>
 </html>
